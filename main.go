@@ -3,6 +3,7 @@ package main
 import (
 	"go-api-koperasi/auth"
 	"go-api-koperasi/handler"
+	"go-api-koperasi/pengajuan"
 	"log"
 
 	"github.com/gin-contrib/cors"
@@ -23,10 +24,18 @@ func main() {
 	userService := auth.NewService(userRepository)
 	userHandler := handler.NewUserHandler(userService)
 
+	pengajuanRepository := pengajuan.NewRepository(db)
+	pengajuanService := pengajuan.NewService(pengajuanRepository)
+	pengajuanHandler := handler.NewPengajuanHandler(pengajuanService)
+
 	router := gin.Default()
 	router.Use(cors.Default())
 
 	api := router.Group("/api/v1")
 	api.POST("/login", userHandler.Login)
+	api.GET("/pengajuan", pengajuanHandler.FindAll)
+	api.GET("/pengajuan/:id", pengajuanHandler.FindByID)
+	api.PUT("/pengajuan/jaminan", pengajuanHandler.Jaminan)
+	api.POST("/pengajuan/jaminan/bukti", pengajuanHandler.AddBuktiJaminan)
 	router.Run()
 }
