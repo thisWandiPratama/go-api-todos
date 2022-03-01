@@ -35,7 +35,8 @@ func main() {
 	api.POST("/login", userHandler.Login)
 	api.GET("/pengajuan", pengajuanHandler.FindAll)
 	api.GET("/pengajuan/:id", pengajuanHandler.FindByID)
-	api.PUT("/pengajuan/jaminan", pengajuanHandler.Jaminan)
+	api.PUT("/pengajuan/jaminanbarang", pengajuanHandler.AddJaminan)
 	api.POST("/pengajuan/jaminan/bukti", pengajuanHandler.AddBuktiJaminan)
+	api.GET("/pengajuan/jaminan/statusdraf", pengajuanHandler.FindAllByStatusDraf)
 	router.Run()
 }

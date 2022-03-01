@@ -1,10 +1,14 @@
 package pengajuan
 
+import "fmt"
+
 type Service interface {
 	FindAll() ([]Pengajuan, error)
 	FindByID(ID int) (Pengajuan, error)
+	FindJaminanBarangByID(ID int) (JaminanBarang, error)
 	FindBuktiAll(ID int) ([]BuktiJaminan, error)
-	UpdateJaminanPengajuan(jaminan UpdateJaminanPengajuan) (Pengajuan, error)
+	FindAllByStatusDraf() ([]Pengajuan, error)
+	UpdateJaminanPengajuan(jaminan UpdateJaminanPengajuan) (JaminanBarang, error)
 	AddBuktiJaminan(bukti AddBuktiJaminan) (BuktiJaminan, error)
 }
 
@@ -25,12 +29,10 @@ func (s *service) FindAll() ([]Pengajuan, error) {
 	return user, nil
 }
 
-func (s *service) UpdateJaminanPengajuan(jaminan UpdateJaminanPengajuan) (Pengajuan, error) {
-	pengajuan, err := s.repository.FindByID(jaminan.NoPengajuan)
-	if err != nil {
-		return pengajuan, err
-	}
+func (s *service) UpdateJaminanPengajuan(jaminan UpdateJaminanPengajuan) (JaminanBarang, error) {
+	var pengajuan JaminanBarang
 
+	pengajuan.IdPengajuan = jaminan.IdPengajuan
 	pengajuan.JenisBarangJaminan = jaminan.JenisBarangJaminan
 	pengajuan.NamaBarangJaminan = jaminan.NamaBarangJaminan
 	pengajuan.KondisiBarangJaminan = jaminan.KondisiBarangJaminan
@@ -52,8 +54,25 @@ func (s *service) FindByID(ID int) (Pengajuan, error) {
 	return pengajuan, nil
 }
 
+func (s *service) FindJaminanBarangByID(ID int) (JaminanBarang, error) {
+	pengajuan, err := s.repository.FindJaminanBarangByID(ID)
+	if err != nil {
+		return pengajuan, err
+	}
+	return pengajuan, nil
+}
+
 func (s *service) FindBuktiAll(ID int) ([]BuktiJaminan, error) {
 	bukti, err := s.repository.FindBuktiAll(ID)
+	if err != nil {
+		return bukti, err
+	}
+
+	return bukti, nil
+}
+
+func (s *service) FindAllByStatusDraf() ([]Pengajuan, error) {
+	bukti, err := s.repository.FindAllByStatusDraf()
 	if err != nil {
 		return bukti, err
 	}
@@ -67,9 +86,9 @@ func (s *service) AddBuktiJaminan(input AddBuktiJaminan) (BuktiJaminan, error) {
 	buktiJaminan.Bukti = input.Bukti
 
 	bukti, err := s.repository.AddBuktiJaminan(buktiJaminan)
+	fmt.Println(bukti)
 	if err != nil {
 		return bukti, err
 	}
-
 	return bukti, nil
 }

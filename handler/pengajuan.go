@@ -36,8 +36,9 @@ func (h *pengajuanHandler) FindAll(c *gin.Context) {
 	}
 
 	var bukti []pengajuan.FormatterBuktiJaminan
+	var jaminanbarang pengajuan.FormaterJaminanBarang
 
-	formatter := pengajuan.FormatAlls(loggedinUser, bukti)
+	formatter := pengajuan.FormatAlls(loggedinUser, jaminanbarang, bukti)
 
 	response := helper.APIResponse("Successfuly", http.StatusOK, "success", formatter)
 
@@ -45,7 +46,7 @@ func (h *pengajuanHandler) FindAll(c *gin.Context) {
 
 }
 
-func (h *pengajuanHandler) Jaminan(c *gin.Context) {
+func (h *pengajuanHandler) AddJaminan(c *gin.Context) {
 	var input pengajuan.UpdateJaminanPengajuan
 
 	err := c.ShouldBindJSON(&input)
@@ -59,20 +60,17 @@ func (h *pengajuanHandler) Jaminan(c *gin.Context) {
 	}
 
 	loggedinTeacher, err := h.pengajuanService.UpdateJaminanPengajuan(input)
-	buktijaminan, err := h.pengajuanService.FindBuktiAll(input.NoPengajuan)
 	if err != nil {
 		errorMessage := gin.H{"errors": err.Error()}
 
-		response := helper.APIResponse("Update Bantuan failed", http.StatusUnprocessableEntity, "error", errorMessage)
+		response := helper.APIResponse("Failed", http.StatusUnprocessableEntity, "error", errorMessage)
 		c.JSON(http.StatusUnprocessableEntity, response)
 		return
 	}
 
-	buktiformat := pengajuan.FormatBuktiAlls(buktijaminan)
+	formatter := pengajuan.FormatJaminanBarang(loggedinTeacher)
 
-	formatter := pengajuan.FormatUser(loggedinTeacher, buktiformat)
-
-	response := helper.APIResponse("Successfuly Update Bantuan", http.StatusOK, "success", formatter)
+	response := helper.APIResponse("Successfuly", http.StatusOK, "success", formatter)
 
 	c.JSON(http.StatusOK, response)
 
@@ -84,6 +82,7 @@ func (h *pengajuanHandler) FindByID(c *gin.Context) {
 	finalIntNum := int(number)
 
 	loggedinTeacher, err := h.pengajuanService.FindByID(finalIntNum)
+	jaminanbarang, err := h.pengajuanService.FindJaminanBarangByID(finalIntNum)
 	buktijaminan, err := h.pengajuanService.FindBuktiAll(finalIntNum)
 	if err != nil {
 		errorMessage := gin.H{"errors": err.Error()}
@@ -93,10 +92,11 @@ func (h *pengajuanHandler) FindByID(c *gin.Context) {
 		return
 	}
 
+	jaminanbarangs := pengajuan.FormaterJaminanBarang(jaminanbarang)
 	buktiformat := pengajuan.FormatBuktiAlls(buktijaminan)
-
-	formatter := pengajuan.FormatUser(loggedinTeacher, buktiformat)
-
+	fmt.Println(jaminanbarang)
+	fmt.Println(buktijaminan)
+	formatter := pengajuan.FormatUser(loggedinTeacher, jaminanbarangs, buktiformat)
 	response := helper.APIResponse("Successfuly", http.StatusOK, "success", formatter)
 
 	c.JSON(http.StatusOK, response)
@@ -118,9 +118,15 @@ func (h *pengajuanHandler) AddBuktiJaminan(c *gin.Context) {
 	value := c.PostForm("id_pengajuan")
 	number, err := strconv.ParseUint(value, 10, 32)
 	id_pengajuan := int(number)
+
+	value1 := c.PostForm("status_draf")
+	number1, err := strconv.ParseUint(value1, 10, 32)
+	status_draf := int(number1)
+
 	input := pengajuan.AddBuktiJaminan{
 		IdPengajuan: id_pengajuan,
 		Bukti:       file.Filename,
+		StatusDraf:  status_draf,
 	}
 
 	buktijaminan, err := h.pengajuanService.AddBuktiJaminan(input)
@@ -143,6 +149,34 @@ func (h *pengajuanHandler) AddBuktiJaminan(c *gin.Context) {
 
 	buktiformat := pengajuan.FormatBukti(buktijaminan)
 	response := helper.APIResponse("Successfuly", http.StatusOK, "success", buktiformat)
+	c.JSON(http.StatusOK, response)
+
+}
+
+func (h *pengajuanHandler) FindAllByStatusDraf(c *gin.Context) {
+
+	loggedinUser, err := h.pengajuanService.FindAllByStatusDraf()
+
+	if err != nil {
+		errorMessage := gin.H{"errors": err.Error()}
+
+		response := helper.APIResponse("Get Draf failed", http.StatusUnprocessableEntity, "error", errorMessage)
+		c.JSON(http.StatusUnprocessableEntity, response)
+		return
+	}
+
+	if err != nil {
+		response := helper.APIResponse("Get Draf failed", http.StatusBadRequest, "error", nil)
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	var jaminanbarang pengajuan.FormaterJaminanBarang
+	var bukti []pengajuan.FormatterBuktiJaminan
+	formatter := pengajuan.FormatAlls(loggedinUser, jaminanbarang, bukti)
+
+	response := helper.APIResponse("Successfuly", http.StatusOK, "success", formatter)
+
 	c.JSON(http.StatusOK, response)
 
 }

@@ -10,7 +10,7 @@ type CheckEmailInput struct {
 }
 
 type UpdateJaminanPengajuan struct {
-	NoPengajuan            int    `json:"no_pengajuan" binding:"required"`
+	IdPengajuan            int    `json:"id_pengajuan" binding:"required"`
 	JenisBarangJaminan     string `json:"jenis_barang_jaminan" binding:"required"`
 	NamaBarangJaminan      string `json:"nama_barang_jaminan" binding:"required"`
 	KondisiBarangJaminan   string `json:"kondisi_barang_jaminan" binding:"required"`
@@ -20,4 +20,5 @@ type UpdateJaminanPengajuan struct {
 type AddBuktiJaminan struct {
 	IdPengajuan int    `json:"id_pengajuan" binding:"required"`
 	Bukti       string `json:"avatar_bukti" binding:"required"`
+	StatusDraf  int    `json:"status_draf" binding:"required"`
 }
