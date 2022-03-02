@@ -4,6 +4,7 @@ import "gorm.io/gorm"
 
 type Repository interface {
 	FindByEmail(email string) (DaftarPetugas, error)
+	LupaPassword(user DaftarPetugas) (DaftarPetugas, error)
 }
 
 type repository struct {
@@ -22,5 +23,14 @@ func (r *repository) FindByEmail(email string) (DaftarPetugas, error) {
 		return user, err
 	}
 
+	return user, nil
+}
+
+func (r *repository) LupaPassword(user DaftarPetugas) (DaftarPetugas, error) {
+
+	err := r.db.Save(&user).Error
+	if err != nil {
+		return user, err
+	}
 	return user, nil
 }

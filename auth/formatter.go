@@ -12,6 +12,13 @@ type UserFormatter struct {
 	Token      string `json:"token"`
 }
 
+type UserFormatter1 struct {
+	ID    int    `json:"id"`
+	Nama  string `json:"nama"`
+	Email string `json:"email"`
+	Pass  string `json:"pass"`
+}
+
 func FormatUser(user DaftarPetugas) UserFormatter {
 	formatter := UserFormatter{
 		ID:         user.ID,
@@ -23,6 +30,17 @@ func FormatUser(user DaftarPetugas) UserFormatter {
 		Pass:       user.Pass,
 		StatusAkun: user.StatusAkun,
 		Token:      "sdksk3kdk93ks.skmsodods.343asadcmmooopsd2#$@1",
+	}
+
+	return formatter
+}
+
+func FormatUser1(user DaftarPetugas) UserFormatter1 {
+	formatter := UserFormatter1{
+		ID:    user.ID,
+		Nama:  user.Nama,
+		Email: user.Email,
+		Pass:  user.Pass,
 	}
 
 	return formatter

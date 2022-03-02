@@ -13,6 +13,7 @@ type Pengajuan struct {
 	SukuBunga      int
 	Nama           string
 	StatusDraf     int
+	Persetujuan    int
 }
 
 type BuktiJaminan struct {
@@ -28,4 +29,24 @@ type JaminanBarang struct {
 	NamaBarangJaminan      string
 	KondisiBarangJaminan   string
 	DeskripsiBarangJaminan string
+}
+
+type JaminanTanah struct {
+	Id                     int
+	IdPengajuan            int
+	Latitude               string
+	Longitude              string
+	Altitude               string
+	ArahLokasi             string
+	NamaBarangJaminan      string
+	KondisiBarangJaminan   string
+	DeskripsiBarangJaminan string
+}
+
+type Notifikasi struct {
+	Id          int
+	IdPengajuan int
+	Petugas     string
+	TglSurvey   string
+	Pukul       string
 }

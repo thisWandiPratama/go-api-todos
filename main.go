@@ -33,10 +33,15 @@ func main() {
 
 	api := router.Group("/api/v1")
 	api.POST("/login", userHandler.Login)
+	api.POST("/lupapassword", userHandler.LupaPassword)
 	api.GET("/pengajuan", pengajuanHandler.FindAll)
 	api.GET("/pengajuan/:id", pengajuanHandler.FindByID)
-	api.PUT("/pengajuan/jaminanbarang", pengajuanHandler.AddJaminan)
+	api.POST("/pengajuan/jaminanbarang", pengajuanHandler.AddJaminan)
+	api.POST("/pengajuan/jaminantanah", pengajuanHandler.AddJaminanTanah)
 	api.POST("/pengajuan/jaminan/bukti", pengajuanHandler.AddBuktiJaminan)
 	api.GET("/pengajuan/jaminan/statusdraf", pengajuanHandler.FindAllByStatusDraf)
+	api.POST("/pengajuan/jaminan/search", pengajuanHandler.SearchJamianAll)
+	api.GET("/pengajuan/disetujui", pengajuanHandler.FindPersetujuanAll)
+	api.GET("/pengajuan/notifikasi", pengajuanHandler.FindNotifikasiAll)
 	router.Run()
 }
