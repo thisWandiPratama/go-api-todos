@@ -1,10 +1,12 @@
 package pengajuan
 
+import "time"
+
 type UserFormatter struct {
 	NoPengajuan   int                     `json:"no_pengajuan"`
 	NoAnggota     int                     `json:"no_anggota"`
 	Petugas       string                  `json:"petugas"`
-	TglPinjam     string                  `json:"tgl_pinjam"`
+	TglPinjam     time.Time               `json:"tgl_pinjam"`
 	TujuanPinjam  string                  `json:"tujuan_pinjam"`
 	Jaminan       string                  `json:"jaminan"`
 	LamaPinjam    int                     `json:"lama_pinjam"`
@@ -22,7 +24,7 @@ type UserFormatterJaminanTanah struct {
 	NoPengajuan  int                     `json:"no_pengajuan"`
 	NoAnggota    int                     `json:"no_anggota"`
 	Petugas      string                  `json:"petugas"`
-	TglPinjam    string                  `json:"tgl_pinjam"`
+	TglPinjam    time.Time               `json:"tgl_pinjam"`
 	TujuanPinjam string                  `json:"tujuan_pinjam"`
 	Jaminan      string                  `json:"jaminan"`
 	LamaPinjam   int                     `json:"lama_pinjam"`

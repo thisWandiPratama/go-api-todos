@@ -1,10 +1,12 @@
 package pengajuan
 
+import "time"
+
 type Pengajuan struct {
 	NoPengajuan    int
 	NoAnggota      int
 	Petugas        string
-	TglPinjam      string
+	TglPinjam      time.Time
 	TujuanPinjam   string
 	Jaminan        string
 	LamaPinjam     int
