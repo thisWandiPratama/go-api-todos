@@ -6,6 +6,7 @@ import (
 	"go-api-koperasi/pengajuan"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -20,6 +21,7 @@ func NewPengajuanHandler(pengajuanService pengajuan.Service) *pengajuanHandler {
 
 func (h *pengajuanHandler) FindAll(c *gin.Context) {
 
+	fmt.Print(time.Now(), "tes")
 	loggedinUser, err := h.pengajuanService.FindAll()
 	if err != nil {
 		errorMessage := gin.H{"errors": err.Error()}
