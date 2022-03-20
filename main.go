@@ -12,7 +12,7 @@ import (
 )
 
 func main() {
-	dsn := "root@tcp(127.0.0.1:3306)/mahasiswa?charset=utf8mb4&parseTime=True&loc=Local"
+	dsn := "jennifer:jennifer38500@tcp(koperasi.crossnet.co.id:3306)/koperasi?parseTime=True"
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
 	if err != nil {
