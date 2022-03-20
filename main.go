@@ -30,5 +30,5 @@ func main() {
 	api := router.Group("/api/v1")
 	api.POST("/add_mahasiswa", mahasiswaHandler.AddMahasiswa)
 
-	router.Run()
+	router.Run(":9999")
 }
