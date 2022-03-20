@@ -2,6 +2,8 @@ package mahasiswa
 
 type Service interface {
 	AddMahasiswa(mahasiswa AddMahasiswa) (Mahasiswa, error)
+	FindAllMahasiswa() ([]Mahasiswa, error)
+	DeleteMahasiswa(ID int) (Mahasiswa, error)
 }
 
 type service struct {
@@ -32,4 +34,22 @@ func (s *service) AddMahasiswa(mahasiswa AddMahasiswa) (Mahasiswa, error) {
 		return notifikasi, err
 	}
 	return notifikasi, nil
+}
+
+func (s *service) FindAllMahasiswa() ([]Mahasiswa, error) {
+	mahasiswa, err := s.repository.FindAllMahasiswa()
+
+	if err != nil {
+		return mahasiswa, nil
+	}
+	return mahasiswa, nil
+}
+
+func (s *service) DeleteMahasiswa(ID int) (Mahasiswa, error) {
+	mahasiswa, err := s.repository.DeleteMahasiswa(ID)
+
+	if err != nil {
+		return mahasiswa, nil
+	}
+	return mahasiswa, nil
 }

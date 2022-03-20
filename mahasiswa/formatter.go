@@ -27,3 +27,15 @@ func FormatMahasiswa(mahasiswa Mahasiswa) UserFormatter {
 
 	return formatter
 }
+
+func FormatterAllMahasiswa(mahasiswa []Mahasiswa) []UserFormatter {
+	mahasiswasFormatter := []UserFormatter{}
+	for _, teac := range mahasiswa {
+		userFormatter := FormatMahasiswa(teac)
+		mahasiswasFormatter = append(mahasiswasFormatter, userFormatter)
+
+	}
+
+	return mahasiswasFormatter
+
+}

@@ -18,7 +18,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err.Error())
 	}
-	db.AutoMigrate(&mahasiswa.Mahasiswa{})
+	// db.AutoMigrate(&mahasiswa.Mahasiswa{})
 
 	mahasiswaRepository := mahasiswa.NewRepository(db)
 	mahasiswaService := mahasiswa.NewService(mahasiswaRepository)
@@ -29,6 +29,8 @@ func main() {
 
 	api := router.Group("/api/v1")
 	api.POST("/add_mahasiswa", mahasiswaHandler.AddMahasiswa)
+	api.GET("/all_mahasiswa", mahasiswaHandler.FindAllMahasiswa)
+	api.POST("/delete_mahasiswa/:id", mahasiswaHandler.DeleteMahasiswa)
 
 	router.Run(":9999")
 }
