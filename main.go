@@ -1,9 +1,8 @@
 package main
 
 import (
-	"go-api-koperasi/auth"
-	"go-api-koperasi/handler"
-	"go-api-koperasi/pengajuan"
+	"go-api-mahasiswa/handler"
+	"go-api-mahasiswa/mahasiswa"
 	"log"
 
 	"github.com/gin-contrib/cors"
@@ -13,35 +12,23 @@ import (
 )
 
 func main() {
-	dsn := "jennifer:jennifer38500@tcp(koperasi.crossnet.co.id:3306)/koperasi?parseTime=True"
+	dsn := "root@tcp(127.0.0.1:3306)/mahasiswa?charset=utf8mb4&parseTime=True&loc=Local"
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
 	if err != nil {
 		log.Fatal(err.Error())
 	}
+	db.AutoMigrate(&mahasiswa.Mahasiswa{})
 
-	userRepository := auth.NewRepository(db)
-	userService := auth.NewService(userRepository)
-	userHandler := handler.NewUserHandler(userService)
-
-	pengajuanRepository := pengajuan.NewRepository(db)
-	pengajuanService := pengajuan.NewService(pengajuanRepository)
-	pengajuanHandler := handler.NewPengajuanHandler(pengajuanService)
+	mahasiswaRepository := mahasiswa.NewRepository(db)
+	mahasiswaService := mahasiswa.NewService(mahasiswaRepository)
+	mahasiswaHandler := handler.NewMahasiswaHandler(mahasiswaService)
 
 	router := gin.Default()
 	router.Use(cors.Default())
 
 	api := router.Group("/api/v1")
-	api.POST("/login", userHandler.Login)
-	api.POST("/lupapassword", userHandler.LupaPassword)
-	api.GET("/pengajuan", pengajuanHandler.FindAll)
-	api.GET("/pengajuan/:id", pengajuanHandler.FindByID)
-	api.POST("/pengajuan/jaminanbarang", pengajuanHandler.AddJaminan)
-	api.POST("/pengajuan/jaminantanah", pengajuanHandler.AddJaminanTanah)
-	api.POST("/pengajuan/jaminan/bukti", pengajuanHandler.AddBuktiJaminan)
-	api.GET("/pengajuan/jaminan/statusdraf", pengajuanHandler.FindAllByStatusDraf)
-	api.POST("/pengajuan/jaminan/search", pengajuanHandler.SearchJamianAll)
-	api.GET("/pengajuan/disetujui", pengajuanHandler.FindPersetujuanAll)
-	api.GET("/pengajuan/notifikasi", pengajuanHandler.FindNotifikasiAll)
+	api.POST("/add_mahasiswa", mahasiswaHandler.AddMahasiswa)
+
 	router.Run()
 }

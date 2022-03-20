@@ -1,4 +1,4 @@
-module go-api-koperasi
+module go-api-mahasiswa
 
 go 1.17
 
