@@ -7,13 +7,13 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"gorm.io/driver/mysql"
+	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
 func main() {
-	dsn := "root@tcp(127.0.0.1:3306)/mahasiswa?charset=utf8mb4&parseTime=True&loc=Local"
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	dsn := "cvhqcltochehwv:ab23f153eb3b8ca6b21bc2b5534fe2e43233217081eb78303eb95aa1931153b2@tcp(ec2-3-231-254-204.compute-1.amazonaws.com:5432)/d5iv6jkaephs52?charset=utf8mb4&parseTime=True&loc=Local"
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 
 	if err != nil {
 		log.Fatal(err.Error())
