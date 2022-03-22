@@ -43,5 +43,5 @@ func main() {
 	api.GET("/all_mahasiswa", mahasiswaHandler.FindAllMahasiswa)
 	api.POST("/delete_mahasiswa/:id", mahasiswaHandler.DeleteMahasiswa)
 
-	router.Run(":9999")
+	router.Run()
 }
