@@ -26,7 +26,7 @@ func (r *repository) AddMahasiswa(mahasiswa Mahasiswa) (Mahasiswa, error) {
 
 func (r *repository) FindAllMahasiswa() ([]Mahasiswa, error) {
 	var mahasiswa []Mahasiswa
-	err := r.db.Find(&mahasiswa).Error
+	err := r.db.Order("id desc").Find(&mahasiswa).Error
 	if err != nil {
 		return mahasiswa, err
 	}
