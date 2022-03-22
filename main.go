@@ -1,24 +1,35 @@
 package main
 
 import (
+	"fmt"
 	"go-api-mahasiswa/handler"
 	"go-api-mahasiswa/mahasiswa"
 	"log"
+	"os"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"gorm.io/driver/mysql"
+	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
 func main() {
-	dsn := "jennifer:jennifer38500@tcp(koperasi.crossnet.co.id:3306)/koperasi?parseTime=True"
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	// dsn := "jennifer:jennifer38500@tcp(koperasi.crossnet.co.id:3306)/koperasi?parseTime=True"
+	// db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+
+	dbUser := os.Getenv("DB_USER")
+	dbPass := os.Getenv("DB_PASS")
+	dbPort := os.Getenv("DB_PORT")
+	dbHost := os.Getenv("DB_HOST")
+	dbName := os.Getenv("DB_NAME")
+
+	dsn := fmt.Sprintf("host=%s user=%s password=%s port=%s dbname=%s sslmode=require TimeZone=Asia/Shanghai", dbHost, dbUser, dbPass, dbPort, dbName)
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 
 	if err != nil {
 		log.Fatal(err.Error())
 	}
-	// db.AutoMigrate(&mahasiswa.Mahasiswa{})
+	db.AutoMigrate(&mahasiswa.Mahasiswa{})
 
 	mahasiswaRepository := mahasiswa.NewRepository(db)
 	mahasiswaService := mahasiswa.NewService(mahasiswaRepository)
